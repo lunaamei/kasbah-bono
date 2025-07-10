@@ -8,6 +8,7 @@
   body, html {
     height: 100%;
     font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
   }
   
   /* Hero Section */
@@ -59,6 +60,7 @@
     padding: 0.6rem 1.4rem;
     border-radius: 4px;
     transition: background 0.3s ease;
+    cursor: pointer;
   }
   
   .cta:hover {
@@ -88,4 +90,138 @@
     }
   }
 
+  /* Contact Section with Card */
+.contact-section {
+    background: black;
+    color: white;
+    padding: 4rem 1rem;
+    text-align: center;
+  }
   
+  .contact-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    gap: 1.5rem;
+    text-align: left;
+  }
+  
+  .contact-photo {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  
+  .contact-details {
+    max-width: 500px;
+  }
+  
+  .contact-details h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-details p {
+    margin: 0.5rem 0;
+  }
+  
+  .contact-details a {
+    color: #aaf;
+    text-decoration: none;
+  }
+  
+  .contact-details a:hover {
+    text-decoration: underline;
+  }
+  
+  .icon {
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+  }
+  
+  /* Responsive */
+  @media (min-width: 768px) {
+    .contact-card {
+      flex-direction: row;
+      text-align: left;
+    }
+  
+    .contact-photo {
+      margin-right: 2rem;
+    }
+  }
+  
+  .map-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #333;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  /* Footer Contact Section */
+.footer-contact {
+    background: black;        /* matches your gold-brown */
+    color: white;
+    padding: 3rem 1rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .footer-contact h2 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+  
+  .footer-contact p {
+    margin: 0.5rem 0;
+  }
+  
+  .footer-contact a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .footer-contact a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Divider bars */
+  .footer-divider {
+    width: 60px;
+    height: 6px;
+    background: black;       /* your deep burgundy accent */
+    margin: 1.5rem auto;
+  }
+  
+  /* Social icons row */
+  .footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .footer-socials img {
+    background: white;
+    padding: 0.6rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    transition: filter 0.3s ease;
+  }
+  
+  .footer-socials a:hover img {
+    filter: brightness(0.7);
+  }
