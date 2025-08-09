@@ -4,42 +4,523 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kasbah Bono</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Enhanced Reset */
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    :root {
+      /* Desert-inspired color palette */
+      --sand-light: #F5E6D3;
+      --sand-medium: #E8D5B7;
+      --sand-dark: #C4A484;
+      --terracotta: #B07A5B;
+      --burnt-orange: #D2691E;
+      --deep-brown: #8B4513;
+      --warm-black: #2C1810;
+      --desert-gold: #DAA520;
+      --sage-green: #9CAF88;
+      --cream: #FFF8DC;
+    }
+    
+    body, html { 
+      height: 100%; 
+      font-family: 'Inter', sans-serif; 
+      scroll-behavior: smooth; 
+      background: var(--cream);
+      color: var(--warm-black);
+    }
+
+    /* Enhanced Hero Section */
+    .hero {
+      position: relative; 
+      height: 100vh;
+      background: linear-gradient(135deg, var(--burnt-orange) 0%, var(--terracotta) 100%);
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      text-align: center; 
+      color: white;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('assets/background.jpg') no-repeat center center/cover;
+      z-index: 1;
+    }
+    
+    .overlay { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: linear-gradient(135deg, rgba(176, 122, 91, 0.7) 0%, rgba(44, 24, 16, 0.6) 100%);
+      z-index: 2;
+    }
+    
+    .content { 
+      position: relative; 
+      z-index: 3; 
+      max-width: 900px; 
+      padding: 2rem; 
+      animation: fadeInUp 1.5s ease-out;
+    }
+    
+    h1 { 
+      font-family: 'Playfair Display', serif; 
+      font-size: clamp(3rem, 8vw, 4rem); 
+      font-weight: 700;
+      margin-bottom: 1rem; 
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      letter-spacing: -0.02em;
+    }
+    
+    .subtitle { 
+      font-size: clamp(1.2rem, 3vw, 1.8rem); 
+      margin-bottom: 3rem; 
+      opacity: 0.95; 
+      font-weight: 300;
+      line-height: 1.4;
+    }
+    
+    .cta { 
+      display: inline-block; 
+      text-decoration: none; 
+      color: white; 
+      background: var(--desert-gold);
+      padding: 1rem 2.5rem; 
+      border-radius: 50px; 
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(218, 165, 32, 0.3);
+      border: 2px solid transparent;
+    }
+    
+    .cta:hover { 
+      background: transparent;
+      border-color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes fadeInUp { 
+      from { 
+        opacity: 0; 
+        transform: translateY(40px); 
+      } 
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      } 
+    }
+
+    /* Enhanced Section Layout */
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInSection 0.8s ease-out forwards;
+      animation-delay: 0.2s;
+    }
+
+    /* Enhanced Slideshow Container */
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 18 / 9;
+      margin-bottom: 3rem;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      background: var(--sand-light); /* Changed from dark to light desert color */
+    }
+
+    .slideshow-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .slide {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide img {
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      max-width: none; /* Allow images to be wider than container */
+    }
+
+    .slide.prev img, .slide.next img {
+      object-fit: cover; /* Crop side images instead of squishing */
+      width: 100%;
+    }
+
+    .slide.current img {
+      object-fit: contain; /* Keep current image full and uncrapped */
+    }
+
+    .slide.prev, .slide.next, .slide.current {
+      opacity: 1;
+      filter: brightness(1);
+    }
+
+    .slide.current {
+      z-index: 2;
+    }
+
+    /* Navigation Arrows */
+    .slideshow-arrows {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    
+    .slideshow-arrows.left {
+      left: 20px;
+    }
+    
+    .slideshow-arrows.right {
+      right: 20px;
+    }
+    
+    .slideshow-btn {
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.4rem;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    .slideshow-btn:hover {
+      background: var(--desert-gold);
+      transform: scale(1.1);
+    }
+
+    .slideshow-track {
+      transition: transform 0.8s ease, opacity 0.8s ease; /* smooth slide/fade */
+    }
+
+    .about-me-image {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .round-photo {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+   
+
+    /* Section Text Styling */
+    .section-text {
+      text-align: center;
+      max-width: 1000px; /* Increased from 800px for wider text */
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .section-text::before {
+      content: '';
+      position: absolute;
+      top: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--desert-gold);
+      border-radius: 2px;
+    }
+    
+    .section-text h2 { 
+      font-family: 'Playfair Display', serif; 
+      margin-bottom: 2rem; 
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--deep-brown);
+      line-height: 1.2;
+    }
+    
+    .section-text p { 
+      font-size: clamp(1.1rem, 2vw, 1.4rem); 
+      line-height: 1.8; 
+      margin: 1.5rem 0;
+      font-weight: 400;
+      color: var(--warm-black);
+      opacity: 0.9;
+    }
+
+    @keyframes fadeInSection {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Enhanced Footer */
+    .footer-contact { 
+      background: linear-gradient(135deg, var(--warm-black) 0%, var(--deep-brown) 100%);
+      color: var(--cream); 
+      padding: 4rem 2rem; 
+      text-align: center; 
+    }
+    
+    .footer-contact h2 { 
+      font-family: 'Playfair Display', serif; 
+      margin-bottom: 2rem; 
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+    }
+    
+    .footer-contact p { 
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
+    
+    .footer-contact a { 
+      color: var(--desert-gold); 
+      text-decoration: none; 
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-contact a:hover { 
+      color: var(--sand-light);
+      text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+    }
+    
+    .footer-divider { 
+      width: 80px; 
+      height: 4px; 
+      background: var(--desert-gold); 
+      margin: 2rem auto; 
+      border-radius: 2px;
+    }
+    
+    .footer-socials { 
+      display: flex; 
+      justify-content: center; 
+      gap: 2rem; 
+      margin-top: 2rem;
+    }
+    
+    .footer-socials a {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background: var(--desert-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      text-decoration: none;
+      color: var(--warm-black);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .footer-socials a:hover { 
+      background: var(--sand-light);
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 10px 25px rgba(218, 165, 32, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .section {
+        padding: 3rem 1rem;
+      }
+      
+      .slideshow-container {
+        height: 40vh; /* Slightly shorter on mobile */
+        min-height: 250px;
+      }
+      
+      .slideshow-arrows.left {
+        left: 10px;
+      }
+      
+      .slideshow-arrows.right {
+        right: 10px;
+      }
+      
+      .footer-socials {
+        gap: 1.5rem;
+      }
+    }
+
+    /* Smooth scroll behavior for the entire page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Intersection Observer animations */
+    .section {
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .section.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 
-  
+  <!-- Hero -->
   <div class="hero">
     <div class="overlay"></div>
     <div class="content">
       <h1>Welcome to Kasbah Bono</h1>
-      <p class="subtitle">Your subtext here.</p>
+      <p class="subtitle">A garden in the desert.</p>
       <a href="#footer-contact" class="cta">Get in touch</a>
     </div>
   </div>
 
-
-  <!-- About Me Section -->
-<section class="contact-section" id="contact">
-    <h2>About Me</h2>
-  
-    <div class="contact-card">
-      <img src="assets/portrait.jpg" alt="About Me" class="contact-photo" />
-  
-      <div class="contact-details">
-        <h3>Hamza</h3>
-        <p>Local guide and host. More about me here.</p>
+    <!-- About the Camp-->
+  <section class="section" data-section="place">
+    <div class="slideshow-container" data-folder="assets/place" data-count="11">
+      <div class="slideshow-track">
+        <img class="slide prev" src="assets/place/img11.jpg" alt="Place image">
+        <img class="slide current" src="assets/place/img1.jpg" alt="Place image">
+        <img class="slide next" src="assets/place/img2.jpg" alt="Place image">
       </div>
+      
+      <div class="slideshow-arrows left">
+        <button class="slideshow-btn prev" aria-label="Previous image">‹</button>
+      </div>
+      <div class="slideshow-arrows right">
+        <button class="slideshow-btn next" aria-label="Next image">›</button>
+      </div>
+      
     </div>
-  
-    <div class="map-container">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d863.992252543083!2d-5.5809623309189!3d29.980320599999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdbe793851fb7ea5%3A0x4869dbc109b0daf2!2sVolunteering%20Camp%20Hamza!5e0!3m2!1sen!2sde!4v1752161625186!5m2!1sen!2sde"
-        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    
+    <div class="section-text">
+      <h2>About Kasbah Bono</h2>
+      <p>The spacious guest house is located in the city center of Tagounite, a historic town known for its abandoned kasbahs and the Draa River that flows through it. In our simple garden, you'll find palm trees, olive trees, corn, cotton, and a few friendly cats. It's a calm and natural space — perfect for grounding yourself and enjoying the beauty of rural Morocco.</p>
+      <p>Our facilities include shared and single rooms, a traditional bucket shower (or a visit to the local hammam), a kitchen, a toilet, and plenty of space for campervans and pets. Our rooftop offers stunning desert views by day and star-filled skies at night.</p>
     </div>
   </section>
-  <!-- Bottom Contact Section -->
+
+  <!-- Whats Special -->
+  <section class="section" data-section="experience">
+    <div class="slideshow-container" data-folder="assets/experience" data-count="14">
+      <div class="slideshow-track">
+        <img class="slide prev" src="assets/experience/img14.jpg" alt="Experience image">
+        <img class="slide current" src="assets/experience/img1.jpg" alt="Experience image">
+        <img class="slide next" src="assets/experience/img2.jpg" alt="Experience image">
+      </div>
+      
+      <div class="slideshow-arrows left">
+        <button class="slideshow-btn prev" aria-label="Previous image">‹</button>
+      </div>
+      <div class="slideshow-arrows right">
+        <button class="slideshow-btn next" aria-label="Next image">›</button>
+      </div>
+      
+      <div class="slideshow-progress">
+        <div class="progress-bar"></div>
+      </div>
+      
+      <div class="slideshow-dots"></div>
+    </div>
+    
+    <div class="section-text">
+      <h2>What Makes It Special</h2>
+      <p>Kasbah Bono is your opportunity to slow down and experience a lifestyle rooted in simplicity. You'll discover local traditions, language, and food; make friends with villagers and fellow volunteers; and explore the wonders of surrounding nature. Whether its hiking in nearby mountains, sleeping under gorgeous night skies, exploring the vast dunes of the Southern Desert, or resting under the palm trees, this is the place to experience real Moroccan life.</p>
+    </div>
+  </section>
+
+  <!-- What to Expect -->
+  <section class="section" data-section="expect">
+    <div class="slideshow-container" data-folder="assets/expect" data-count="22">
+      <div class="slideshow-track">
+        <img class="slide prev" src="assets/expect/img22.jpg" alt="What to expect image">
+        <img class="slide current" src="assets/expect/img1.jpg" alt="What to expect image">
+        <img class="slide next" src="assets/expect/img2.jpg" alt="What to expect image">
+      </div>
+      
+      <div class="slideshow-arrows left">
+        <button class="slideshow-btn prev" aria-label="Previous image">‹</button>
+      </div>
+      <div class="slideshow-arrows right">
+        <button class="slideshow-btn next" aria-label="Next image">›</button>
+      </div>
+      
+      <div class="slideshow-progress">
+        <div class="progress-bar"></div>
+      </div>
+      
+      <div class="slideshow-dots"></div>
+    </div>
+    
+    <div class="section-text">
+      <h2>Daily Activities</h2>
+      <p>Mornings start with a shared breakfast, followed by light gardening or project work. After a healthy lunch with local ingredients, afternoons are free for rest, exploring, or relaxing. In the evening, we often gather to cook, play games, or visit abandoned kasbahs together.</p>
+      <p>We cook traditional Moroccan meals like tajine, couscous, and local-style eggs. Living and eating together, volunteers quickly become part of our family.</p>
+    </div>
+  </section>
+
+
+  <!-- About Me -->
+  <section class="section" data-section="me">
+    <div class="about-me-image">
+      <img src="assets/me/img1.jpg" alt="About me image" class="round-photo">
+    </div>
+
+    <div class="section-text">
+      <h2>About Me</h2>
+      <p>My name is Hamza, and I am a local Amazigh from Tagounite with deep roots in the Sahara. I've spent my life exploring and sharing the beauty of the desert with travelers from around the world. I created this garden space to bring people together — travelers, volunteers, and locals — to connect, work, and experience the peaceful rhythm of desert life.</p>
+    </div>
+  </section>
+
+
+<!-- Bottom Contact Section -->
 <section class="footer-contact" id="footer-contact">
     <h2>GET IN TOUCH</h2>
 
@@ -60,9 +541,239 @@
         Disclaimer: This website contains links to external platforms. We are not responsible for the content, <br> privacy policies, or security practices of any third-party site. </p>
   
     <div class="footer-divider"></div>
+    <p>Website by  <a href="https://github.com/lunaamei" target="_blank">Luna Döring</a>. All rights reserved.</p>
+
   </section>
-  
-  
-  
+
+
+  <script>
+    // Enhanced slideshow with three-panel view and original aspect ratios
+    class EnhancedSlideshow {
+      constructor(element) {
+        this.element = element;
+        this.track = element.querySelector('.slideshow-track');
+        this.folder = element.getAttribute('data-folder');
+        this.count = parseInt(element.getAttribute('data-count'), 10);
+        this.currentIndex = 1;
+        this.isPlaying = true;
+        this.slideInterval = null;
+        this.slideSpeed = 1500; // Variable speed in milliseconds (4 seconds)
+        this.validImages = [];
+        
+        this.init();
+      }
+      
+      async init() {
+        await this.validateImages();
+        
+        if (this.validImages.length > 1) {
+          this.createDots();
+          this.bindEvents();
+          this.startSlideshow();
+        } else {
+          // Hide navigation for single or no images
+          const arrows = this.element.querySelectorAll('.slideshow-arrows');
+          const dots = this.element.querySelector('.slideshow-dots');
+          arrows.forEach(arrow => arrow.style.display = 'none');
+          if (dots) dots.style.display = 'none';
+          
+          if (this.validImages.length === 1) {
+            this.setupSingleImage();
+          }
+        }
+      }
+      
+      async validateImages() {
+        const promises = [];
+        for (let i = 1; i <= this.count; i++) {
+          promises.push(this.checkImageExists(i));
+        }
+        
+        const results = await Promise.all(promises);
+        this.validImages = results.filter(result => result !== null);
+        
+        if (this.validImages.length > 0) {
+          this.currentIndex = 1;
+        }
+      }
+      
+      checkImageExists(index) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(index);
+          img.onerror = () => resolve(null);
+          img.src = `${this.folder}/img${index}.jpg`;
+        });
+      }
+      
+      setupSingleImage() {
+        const currentSlide = this.track.querySelector('.slide.current');
+        if (currentSlide && this.validImages[0]) {
+          currentSlide.src = `${this.folder}/img${this.validImages[0]}.jpg`;
+        }
+        
+        // Remove prev/next slides for single image
+        const prevSlide = this.track.querySelector('.slide.prev');
+        const nextSlide = this.track.querySelector('.slide.next');
+        if (prevSlide) prevSlide.remove();
+        if (nextSlide) nextSlide.remove();
+      }
+      
+      createDots() {
+        const dotsContainer = this.element.querySelector('.slideshow-dots');
+        if (!dotsContainer) return;
+        
+        dotsContainer.innerHTML = '';
+        
+        for (let i = 0; i < this.validImages.length; i++) {
+          const dot = document.createElement('button');
+          dot.classList.add('slideshow-dot');
+          if (i === 0) dot.classList.add('active');
+          dot.addEventListener('click', () => this.goToSlide(i + 1));
+          dotsContainer.appendChild(dot);
+        }
+      }
+      
+      bindEvents() {
+        const prevBtn = this.element.querySelector('.slideshow-arrows.left .prev');
+        const nextBtn = this.element.querySelector('.slideshow-arrows.right .next');
+        
+        if (prevBtn) {
+          prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.prevSlide();
+          });
+        }
+        
+        if (nextBtn) {
+          nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.nextSlide();
+          });
+        }
+        
+        // Pause on hover
+        //this.element.addEventListener('mouseenter', () => this.pauseSlideshow());
+        //this.element.addEventListener('mouseleave', () => this.resumeSlideshow());
+      }
+      
+      updateSlides() {
+        const slides = this.track.querySelectorAll('.slide');
+        if (this.validImages.length === 0) return;
+        
+        const currentValidIndex = (this.currentIndex - 1) % this.validImages.length;
+        const prevValidIndex = currentValidIndex === 0 ? this.validImages.length - 1 : currentValidIndex - 1;
+        const nextValidIndex = (currentValidIndex + 1) % this.validImages.length;
+        
+        const prevImageIndex = this.validImages[prevValidIndex];
+        const currentImageIndex = this.validImages[currentValidIndex];
+        const nextImageIndex = this.validImages[nextValidIndex];
+        
+        if (slides.length >= 3) {
+          slides[0].src = `${this.folder}/img${prevImageIndex}.jpg`;
+          slides[1].src = `${this.folder}/img${currentImageIndex}.jpg`;
+          slides[2].src = `${this.folder}/img${nextImageIndex}.jpg`;
+          
+          // Handle error cases
+          slides[0].onerror = () => this.handleImageError(slides[0]);
+          slides[1].onerror = () => this.handleImageError(slides[1]);
+          slides[2].onerror = () => this.handleImageError(slides[2]);
+        }
+        
+        this.updateDots();
+      }
+      
+      handleImageError(imgElement) {
+        imgElement.style.display = 'none';
+      }
+      
+      updateDots() {
+        const dots = this.element.querySelectorAll('.slideshow-dot');
+        const currentValidIndex = (this.currentIndex - 1) % this.validImages.length;
+        
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentValidIndex);
+        });
+      }
+      
+      goToSlide(index) {
+        this.currentIndex = index;
+        this.updateSlides();
+        this.restartSlideshow();
+      }
+      
+      prevSlide() {
+        this.currentIndex = this.currentIndex === 1 ? this.validImages.length : this.currentIndex - 1;
+        this.updateSlides();
+        this.restartSlideshow();
+      }
+      
+      nextSlide() {
+        this.currentIndex = this.currentIndex === this.validImages.length ? 1 : this.currentIndex + 1;
+        this.updateSlides();
+        this.restartSlideshow();
+      }
+      
+      startSlideshow() {
+        if (this.validImages.length <= 1) return;
+        
+        this.slideInterval = setInterval(() => {
+          if (this.isPlaying) {
+            this.nextSlide();
+          }
+        }, this.slideSpeed); // Now uses the variable speed
+      }
+      
+      pauseSlideshow() {
+        this.isPlaying = false;
+      }
+      
+      resumeSlideshow() {
+        this.isPlaying = true;
+      }
+      
+      restartSlideshow() {
+        clearInterval(this.slideInterval);
+        this.startSlideshow();
+      }
+    }
+
+    // Initialize slideshows
+    document.querySelectorAll('.slideshow-container[data-count]').forEach(element => {
+      new EnhancedSlideshow(element);
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Smooth scroll enhancement for CTA button
+    document.querySelector('.cta').addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  </script>
+
 </body>
 </html>
